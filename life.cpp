@@ -1,15 +1,15 @@
 //Fabian Okeke
 //Sept 1st, 2014
 //CS 6410: Adv Sys
-//Code copied and adapted from Runnable.com
+//Code adapted from Runnable.com
 //Link: http://runnable.com/UwQvQY99xW5AAAAQ/john-conway-s-game-of-life-for-c%2B%2B-nested-for-loops-and-2-dimensional-arrays
 
 //DESCRIPTION
 //A very simple C++ implementation of John Conway's Game of Life.
 //This implementation uses several nested for loops as well as two-dimensional
 //arrays to create a grid for the cells in the simulation to interact.
-//The array that is displayed to the user is 50 x 100, but actual size
-//of the array is 52 x 102.  The reason for this is to make the
+//The array that is displayed to the user is ROW-2 x COL-2 (e.g 50 x 100), but actual size
+//of the array is ROW x COL(52 x 102).  The reason for this is to make the
 //calculations easier for the cells on the outermost "frame" of the grid.
 
 #include <iostream>
