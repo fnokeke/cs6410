@@ -17,20 +17,21 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
-#include <vector>
+#include "vec2d.h"
+
 
 using namespace std;
 
 //declaring typedefs
-typedef vector< vector<int> > vec2d;
+//typedef vector< vector<int> > vec2d;
 
 //defining fcn prototype
 //void print(vec2d array);
 
 //array dimensions
-#define ROW 12
-#define COL 12
-#define LIMIT 100
+#define ROW 14
+#define COL 14
+#define LIMIT 10
 
 //Copies one vec2d array to another.
 //copy(source, destination)
@@ -72,7 +73,8 @@ void life(vec2d& array, char choice)
 {
     //Copies the main array to a temp array so changes can be entered into a grid
     //without affecting the other cells and the calculations being performed on them.
-	vec2d temp(ROW, std::vector<int>(COL));
+	//vec2d temp(ROW, std::vector<int>(COL));
+    vec2d temp(ROW * COL);
     copy(array, temp);
     for(int j = 1; j < ROW-1; j++)
     {
@@ -169,9 +171,12 @@ void print(vec2d& array)
 
 int main()
 {	
-	vec2d gen0(ROW, std::vector<int>(COL));
-	vec2d todo(ROW, std::vector<int>(COL));
-	vec2d backup(ROW, std::vector<int>(COL));
+	//vec2d gen0(ROW, std::vector<int>(COL));
+	//vec2d todo(ROW, std::vector<int>(COL));
+	//vec2d backup(ROW, std::vector<int>(COL));
+    vec2d gen0(ROW,COL);
+    vec2d todo(ROW,COL);
+    vec2d backup(ROW,COL);
     char neighborhood;
     char again;
     char cont;
@@ -209,19 +214,20 @@ int main()
         int i = 0;
         //Loop that does the bulk of the simulation.
         do
-        {
+        {	
             //Generates the initial random state of the game board.
             srand(time(NULL));
             //The actual array is ROW X COL (102 x 52), but it's easier to just leave the surrounding part of
             //the array blank so it doesn't affect the calculations in the life function above.
             for(int j = 1; j < ROW-1; j++)
             {
-                for (int i = 1; i < COL-1; i++)
-                    gen0[j][i] = rand() % 2;
+                for (int i = 0; i < COL-1; i++)
+					gen0[j][i] = rand() % 2;
             }
            
             //Determines how big the decoration should be.
             if(i < 10)
+            
                 decoration = "#############";
             else if(i >= 10 && i < 100)
                 decoration = "##############";
