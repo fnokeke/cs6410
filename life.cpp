@@ -17,32 +17,62 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <vector>
 
 using namespace std;
 
-//array dimensions
-#define ROW 52
-#define COL 102
+//declaring typedefs
+typedef vector< vector<int> > vec2d;
 
-//Copies one array to another.
+//defining fcn prototype
+//void print(vec2d array);
+
+//array dimensions
+#define ROW 12
+#define COL 12
+#define LIMIT 100
+
+//Copies one vec2d array to another.
 //copy(source, destination)
-void copy(int array1[ROW][COL], int array2[ROW][COL])
-{
+void copy(vec2d& src, vec2d& dest)
+{	
     for(int j = 0; j < ROW; j++)
     {
         for(int i = 0; i < COL; i++)
-            array2[j][i] = array1[j][i];
+            dest[j][i] = src[j][i];
     }
+}
+
+//This function checks if the array has all dead cells
+//at the corners
+bool isCornerFull(vec2d& array)
+{
+    int count = 0;
+    for(int j = 0; j < ROW; j++)
+    {
+        for(int i = 0; i < COL; i++)
+        {
+            if(array[j][i]==1)
+                count++;
+        }
+    }
+    //Since the count gets incremented every time the cells are equal to 1,
+    //an easy way to check if all cells are dead is to compare the count to
+    //the dimensions of the array multiplied together.
+    if(count == ROW*COL)
+        return true;
+    else
+        return false;
 }
 
 //The life function is the most important function in the program.
 //It counts the number of cells surrounding the center cell, and
 //determines whether it lives, dies, or stays the same.
-void life(int array[ROW][COL], char choice)
+void life(vec2d& array, char choice)
 {
     //Copies the main array to a temp array so changes can be entered into a grid
     //without affecting the other cells and the calculations being performed on them.
-    int temp[ROW][COL];
+	vec2d temp(ROW, std::vector<int>(COL));
     copy(array, temp);
     for(int j = 1; j < ROW-1; j++)
     {
@@ -101,7 +131,7 @@ void life(int array[ROW][COL], char choice)
 //becomes stable before the 100th generation. This
 //occurs fairly often in the Von Neumann neighborhood,
 //but almost never in the Moore neighborhood.
-bool compare(int array1[ROW][COL], int array2[ROW][COL])
+bool compare(vec2d& array1, vec2d& array2)
 {
     int count = 0;
     for(int j = 0; j < ROW; j++)
@@ -121,10 +151,8 @@ bool compare(int array1[ROW][COL], int array2[ROW][COL])
         return false;
 }
 
-//This function prints the 50 x 100 part of the array, since that's the only
-//portion of the array that we're really interested in. A live cell is marked
-//by a '*', and a dead or vacant cell by a ' '.
-void print(int array[ROW][COL])
+//print vec2d array
+void print(vec2d& array)
 {
     for(int j = 1; j < ROW-1; j++)
     {
@@ -141,9 +169,9 @@ void print(int array[ROW][COL])
 
 int main()
 {	
-    int gen0[ROW][COL];
-    int todo[ROW][COL];
-    int backup[ROW][COL];
+	vec2d gen0(ROW, std::vector<int>(COL));
+	vec2d todo(ROW, std::vector<int>(COL));
+	vec2d backup(ROW, std::vector<int>(COL));
     char neighborhood;
     char again;
     char cont;
@@ -191,6 +219,7 @@ int main()
                 for (int i = 1; i < COL-1; i++)
                     gen0[j][i] = rand() % 2;
             }
+           
             //Determines how big the decoration should be.
             if(i < 10)
                 decoration = "#############";
@@ -207,8 +236,9 @@ int main()
             cout << decoration << endl << "Generation " << i
                  << ":" << endl << decoration << endl << endl;
             //Initializes the arrays by copying the gen0 array to the todo array.
-            if(i == 0)
+            if(i == 0) {
                 copy(gen0, todo);
+			}
             copy(todo, backup);
             print(todo);
             life(todo, neighborhood);
@@ -220,7 +250,7 @@ int main()
             //the user if they want to continue the simulation. If they
             //wish to end, the program breaks out of the loop to ask if
             //the user wishes to run another simulation.
-            if(i % 100 == 1 && i != 1)
+            if(i % LIMIT == 1 && i != 1)
             {
                 cout << endl;
                 //Loop to check for proper inputs.
