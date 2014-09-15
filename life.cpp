@@ -22,9 +22,10 @@
 using namespace std;
 
 //array dimensions
-#define ROW 14
-#define COL 14
-#define LIMIT 10
+#define ROW 8
+#define COL 10
+#define ARRAY_LIMIT 65000
+
 
 //Copies one vec2d array to another.
 //copy(source, destination)
@@ -37,27 +38,6 @@ void copy(vec2d& src, vec2d& dest)
     }
 }
 
-//This function checks if the array has all dead cells
-//at the corners
-bool isCornerFull(vec2d& array)
-{
-    int count = 0;
-    for(int j = 0; j < ROW; j++)
-    {
-        for(int i = 0; i < COL; i++)
-        {
-            if(array[j][i]==1)
-                count++;
-        }
-    }
-    //Since the count gets incremented every time the cells are equal to 1,
-    //an easy way to check if all cells are dead is to compare the count to
-    //the dimensions of the array multiplied together.
-    if(count == ROW*COL)
-        return true;
-    else
-        return false;
-}
 
 //The life function is the most important function in the program.
 //It counts the number of cells surrounding the center cell, and
@@ -67,7 +47,7 @@ void life(vec2d& array, char choice)
     //Copies the main array to a temp array so changes can be entered into a grid
     //without affecting the other cells and the calculations being performed on them.
 	//vec2d temp(ROW, std::vector<int>(COL));
-    vec2d temp(ROW * COL);
+    vec2d temp(ROW, COL);
     copy(array, temp);
     for(int j = 1; j < ROW-1; j++)
     {
@@ -149,14 +129,14 @@ bool compare(vec2d& array1, vec2d& array2)
 //print vec2d array
 void print(vec2d& array)
 {
-    for(int j = 1; j < ROW-1; j++)
+    for(int j = 0; j < array.get_row_len(); j++)
     {
-        for(int i = 1; i < COL-1; i++)
+        for(int i = 0; i < array.get_col_len(); i++)
         {
             if(array[j][i] == 1)
                 cout << '*';
             else
-                cout << ' ';
+                cout << '-';
         }
         cout << endl;
     }
@@ -199,7 +179,7 @@ int main()
         {
             cout << "Which neighborhood would you like to use (m or v): ";
             cin >> neighborhood;
-            cout << "Which sequence(random or gliders): ";
+            cout << "Which sequence random(r) or gliders(g): ";
             cin >> sequence;
             cout << "What is your simulation limit(10, 20, 50, 100, 1000): ";
             cin >> limit;
@@ -239,7 +219,7 @@ int main()
             //Pauses the system for 1/10 of a second in order to give the screen
             //time to refresh.
             system("sleep .1");
-            //Checks whether the generation is a multiple of 100 to ask
+            //Checks whether the generation is a multiple of limit to ask
             //the user if they want to continue the simulation. If they
             //wish to end, the program breaks out of the loop to ask if
             //the user wishes to run another simulation.
@@ -261,12 +241,23 @@ int main()
             //clears the screen and repeats the process until they are
             //the same or the user chooses to quit.
             comparison = compare(todo, backup);
-            if(comparison == false)
-                system("clear");
-            if(comparison == true)
-                cout << endl;
+            if(comparison == false) 
+               // system("clear");
+               cout << endl << endl;
+			
+            //expand all arrays when previous and current states are same
+            if(corner_flag_set(todo)) {
+				cout << "Expansion: array size before: " << todo.get_size() << backup.get_size() << gen0.get_size() << endl;
+				//vector<int> vv = double_vec(gen0);
+				gen0.resize();
+				todo.resize();
+				backup.resize();
+				cout << "Expansion: array size after: " << todo.get_size() << backup.get_size() << gen0.get_size() << endl;
+             }
+       
         }
-        while(comparison == false);
+		while(gen0.get_size() <= ARRAY_LIMIT);
+
         //Loop to check for proper inputs.
         do
         {
