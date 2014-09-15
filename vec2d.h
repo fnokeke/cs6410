@@ -12,6 +12,8 @@ using namespace std;
 
 class vec2d {
 	private:
+		int col_index;
+		int row_index;
 		int col_len;
 		int row_len;
 		int size;
@@ -24,6 +26,7 @@ class vec2d {
 		int get_size(){return vec.size();}
 		vector<int> get_vec(){return vec;}
 		void set_vec(vector<int>& v);
+		void set_index(int r, int c);
 		int* operator[](int i);	
 		void resize();
 };
@@ -32,14 +35,22 @@ class vec2d {
 //class implementation
 //
 
+void vec2d::set_index(int r, int c) {
+	row_index = r;
+	col_index = c;
+}
+
+
 vec2d::vec2d(int rlen, int clen):
+			col_index(0),
+			row_index(0),
 			col_len(clen), 
 			row_len(rlen),
 			size(rlen * clen), 
 			vec(rlen * clen, 0) {}
 
 int* vec2d::operator[](int i){
-//assert (size <= (int) vec.capacity());
+		//assert (size <= (int) vec.capacity());
 		///assert (i*row_len <= size);
 		//cout << "i=" << i << ";" << "row_len="<<row_len << ";" << "size=" << size << endl;
 		//assert (i*row_len + row_len <= size);
@@ -51,7 +62,7 @@ void vec2d::resize() {
 	col_len *= FACTOR;
 	int new_size = row_len * col_len;
 	cout << "now resizing to " << new_size << endl;
-	vec.resize(new_size,0);
+	vec = vector<int>(new_size,0);
 }
 
 //This function checks if the array has any cells at the 

@@ -16,15 +16,16 @@
 #include <string>
 #include <stdio.h>
 #include <stdlib.h>
+//#include <thread>
 #include <time.h>
 #include "vec2d.h"
 
 using namespace std;
 
 //array dimensions
-#define ROW 8
+#define ROW 10
 #define COL 10
-#define ARRAY_LIMIT 65000
+#define ARRAY_LIMIT 10000
 
 
 //Copies one vec2d array to another.
@@ -144,7 +145,7 @@ void print(vec2d& array)
 
 int main()
 {	
-    vec2d gen0(ROW,COL);
+    //vec2d gen0(ROW,COL);
     vec2d todo(ROW,COL);
     vec2d backup(ROW,COL);
     int limit;
@@ -154,7 +155,39 @@ int main()
     bool comparison;
     string decoration;
     string sequence;
+    //spawn threads
+    //thread first(print);
+    //thread second(life);
+    //thread third(copy);
+    //first.join(); 
+    //pauses until first finishes
 
+	/*cout << todo.get_row_len() << "x"<<todo.get_col_len() << endl << "TESTER!!!\n\n" ;
+	int count = 1;
+	for(int j = 0; j < todo.get_row_len(); j++)
+    {
+        for(int i = 0; i < todo.get_col_len(); i++)
+        {
+			todo.set_index(j,i);
+			todo[j][i] = count;
+			count++;
+		}
+	}
+	
+	todo.resize();
+	
+	cout << todo.get_row_len() << "x"<<todo.get_col_len() << endl << "TESTER22!!!\n\n" ;
+	for(int j = 0; j < todo.get_row_len(); j++)
+    {
+        for(int i = 0; i < todo.get_col_len(); i++)
+        {
+			todo.set_index(j,i);
+			cout << todo[j][i] << endl;
+		}
+	}
+	
+	exit(0);
+    */
     //Instructions on how the program is used, along with the rules of the game.
     cout << endl << "This program is a C++ implementation of John Conway's Game of Life."
          << endl << "With it, you can simulate how \"cells\" interact with each other." << endl
@@ -191,8 +224,9 @@ int main()
         //Loop that does the bulk of the simulation.
         do
         {	
-            set_sequence(gen0, sequence);
-           
+			//set initial board configuration
+			if (i==0)
+				set_sequence(todo, sequence);
             //Determines how big the decoration should be.
             if(i < 10)
                 decoration = "#############";
@@ -207,11 +241,11 @@ int main()
             //Prints the generation.  If i == 0, the gen0 array is copied to the
             //todo array, and is printed before any functions act upon it.
             cout << decoration << endl << "Generation " << i
-                 << ":" << endl << decoration << endl << endl;
+                 << ":" << endl << decoration << endl;
             //Initializes the arrays by copying the gen0 array to the todo array.
-            if(i == 0) {
-                copy(gen0, todo);
-			}
+           // if(i == 0) {
+             //   copy(gen0, todo);
+			//}
             copy(todo, backup);
             print(todo);
             life(todo, neighborhood);
@@ -241,23 +275,38 @@ int main()
             //clears the screen and repeats the process until they are
             //the same or the user chooses to quit.
             comparison = compare(todo, backup);
-            if(comparison == false) 
+           // if(comparison == false) 
                // system("clear");
-               cout << endl << endl;
+             //  cout << endl << endl;
 			
             //expand all arrays when previous and current states are same
             if(corner_flag_set(todo)) {
-				cout << "Expansion: array size before: " << todo.get_size() << backup.get_size() << gen0.get_size() << endl;
-				//vector<int> vv = double_vec(gen0);
-				gen0.resize();
+			/*	cout << "Corner_flag_set(b4):" << todo.get_size() << endl;
+				cout << "Current todo:" << endl;
+				print(todo);
+				cout << endl;
 				todo.resize();
 				backup.resize();
-				cout << "Expansion: array size after: " << todo.get_size() << backup.get_size() << gen0.get_size() << endl;
+				set_sequence(todo, sequence);
+				cout << "Corner_flag_set(after):" << todo.get_size() << endl;
+				cout << "After resize todo:" << endl;
+				print(todo);
+				*/
              }
+             if (comparison == true) {
+				cout << "Comparison(b4):" << todo.get_size() << endl;
+				todo.resize();
+				backup.resize();
+				set_sequence(todo, sequence);
+				cout << "Comparison expanded todo.size:" << todo.get_size() << endl;	
+				comparison=false;			 
+			 }
+			 
        
         }
-		while(gen0.get_size() <= ARRAY_LIMIT);
-
+		while(todo.get_size() <= ARRAY_LIMIT);
+		//while(comparison == false);
+		
         //Loop to check for proper inputs.
         do
         {
