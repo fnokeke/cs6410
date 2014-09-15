@@ -205,15 +205,7 @@ int main()
         //Loop that does the bulk of the simulation.
         do
         {	
-            //Generates the initial random state of the game board.
-            srand(time(NULL));
-            //The actual array is ROW X COL (102 x 52), but it's easier to just leave the surrounding part of
-            //the array blank so it doesn't affect the calculations in the life function above.
-            for(int j = 1; j < ROW-1; j++)
-            {
-                for (int i = 0; i < COL-1; i++)
-					gen0[j][i] = rand() % 2;
-            }
+            set_seq(gen0, "random");
            
             //Determines how big the decoration should be.
             if(i < 10)

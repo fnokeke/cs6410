@@ -17,10 +17,10 @@ class vec2d {
 	public:
 		vec2d(int size);
 		vec2d(int row_len, int col_len);
-		int* get(int i, int j);
+		int get_row_len(){return row_len;}
+		int get_col_len(){return col_len;}
 		int* operator[](int i);	
 		void resize(int row, int col);
-		void set_sequence(std::string seq);
 };
 
 
@@ -34,10 +34,6 @@ vec2d::vec2d(int row_len, int col_len):
 			vec(row_len * col_len, 0),
 			row_len(row_len),
 			col_len(col_len) {}
-			
-int* vec2d::get(int i, int j) {
-	return &vec[i*j];
-}
 
 int* vec2d::operator[](int i){
 		assert (size <= (int) vec.capacity());
@@ -51,14 +47,27 @@ void vec2d::resize(int i, int j) {
 	vec.resize(i * j);
 }
 
-void vec2d::set_sequence(std::string seq) {
-	if (seq == "gliders") {
+//function outside class 
+void set_seq(vec2d& vec, string seq) {
+	//Generates a random state 
+	if (seq == "random") {
+		srand(time(NULL));
+		for(int j = 0; j < vec.get_row_len(); j++)
+            {
+                for (int i = 0; i < vec.get_col_len(); i++)
+					vec[j][i] = rand() % 2;
+            }	
+	}
+	//Generates a glider state 
+	else if (seq == "gliders") {
 	
 	}
+	//Generates a gun state 
 	else if (seq == "guns") {
 		
 	}
 }
+
 
 #endif
  
