@@ -19,14 +19,7 @@
 #include <time.h>
 #include "vec2d.h"
 
-
 using namespace std;
-
-//declaring typedefs
-//typedef vector< vector<int> > vec2d;
-
-//defining fcn prototype
-//void print(vec2d array);
 
 //array dimensions
 #define ROW 14
@@ -171,9 +164,6 @@ void print(vec2d& array)
 
 int main()
 {	
-	//vec2d gen0(ROW, std::vector<int>(COL));
-	//vec2d todo(ROW, std::vector<int>(COL));
-	//vec2d backup(ROW, std::vector<int>(COL));
     vec2d gen0(ROW,COL);
     vec2d todo(ROW,COL);
     vec2d backup(ROW,COL);
@@ -227,7 +217,6 @@ int main()
            
             //Determines how big the decoration should be.
             if(i < 10)
-            
                 decoration = "#############";
             else if(i >= 10 && i < 100)
                 decoration = "##############";

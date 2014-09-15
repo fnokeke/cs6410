@@ -13,7 +13,6 @@ class vec2d {
 		vector<int> vec;
 		int row_len;
 		int col_len;
-
 		
 	public:
 		vec2d(int size);
@@ -28,11 +27,11 @@ class vec2d {
 //class implementation
 //for vec2d
 
-vec2d::vec2d(int size):size(size),vec(size) {}
+vec2d::vec2d(int size):size(size),vec(size, 0) {}
 
 vec2d::vec2d(int row_len, int col_len):
 			size(row_len * col_len),
-			vec(row_len * col_len),
+			vec(row_len * col_len, 0),
 			row_len(row_len),
 			col_len(col_len) {}
 			
