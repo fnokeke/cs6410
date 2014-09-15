@@ -48,19 +48,27 @@ void vec2d::resize(int i, int j) {
 }
 
 //function outside class 
-void set_seq(vec2d& vec, string seq) {
+void set_sequence(vec2d& vec, string seq) {
 	//Generates a random state 
+	int row = vec.get_row_len();
+	int col = vec.get_col_len();
 	if (seq == "random") {
 		srand(time(NULL));
-		for(int j = 0; j < vec.get_row_len(); j++)
-            {
-                for (int i = 0; i < vec.get_col_len(); i++)
-					vec[j][i] = rand() % 2;
-            }	
+		for(int j = 0; j < row; j++)
+        {
+			for (int i = 0; i < col; i++)
+				vec[j][i] = rand() % 2;
+		}	
 	}
 	//Generates a glider state 
 	else if (seq == "gliders") {
-	
+		if (row >=5 && col >= 5) {
+			vec[1][2] = 1;
+			vec[2][3] = 1;
+			vec[3][1] = 1;
+			vec[3][2] = 1;
+			vec[3][3] = 1;
+		}
 	}
 	//Generates a gun state 
 	else if (seq == "guns") {

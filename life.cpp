@@ -167,11 +167,13 @@ int main()
     vec2d gen0(ROW,COL);
     vec2d todo(ROW,COL);
     vec2d backup(ROW,COL);
+    int limit;
     char neighborhood;
     char again;
     char cont;
     bool comparison;
     string decoration;
+    string sequence;
 
     //Instructions on how the program is used, along with the rules of the game.
     cout << endl << "This program is a C++ implementation of John Conway's Game of Life."
@@ -197,6 +199,10 @@ int main()
         {
             cout << "Which neighborhood would you like to use (m or v): ";
             cin >> neighborhood;
+            cout << "Which sequence(random or gliders): ";
+            cin >> sequence;
+            cout << "What is your simulation limit(10, 20, 50, 100, 1000): ";
+            cin >> limit;
         }
         while(neighborhood != 'm' && neighborhood != 'v');
         //Clears the screen so the program can start fresh.
@@ -205,7 +211,7 @@ int main()
         //Loop that does the bulk of the simulation.
         do
         {	
-            set_seq(gen0, "random");
+            set_sequence(gen0, sequence);
            
             //Determines how big the decoration should be.
             if(i < 10)
@@ -237,7 +243,7 @@ int main()
             //the user if they want to continue the simulation. If they
             //wish to end, the program breaks out of the loop to ask if
             //the user wishes to run another simulation.
-            if(i % LIMIT == 1 && i != 1)
+            if(i % limit == 1 && i != 1)
             {
                 cout << endl;
                 //Loop to check for proper inputs.
